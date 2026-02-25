@@ -68,13 +68,22 @@
 		
           <div class="column has-text-centered">
             <div class="publication-links">
-			  <span class="link-block">
+			        <span class="link-block">
                 <a href="https://arxiv.org/abs/2602.08167"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
                   </span>
                   <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
                 </a>
               </span>
             </div>
@@ -113,14 +122,15 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Embodied Chain-of-Thought (CoT) reasoning has significantly enhanced Vision-Language-Action (VLA) models, yet current methods rely on rigid templates to specify reasoning primitives (e.g., objects in the scene, high-level plans, structural affordances). These templates can force policies to process irrelevant information that distracts from critical action-prediction signals.
+            Embodied Chain-of-Thought (CoT) reasoning has significantly enhanced Vision-Language-Action (VLA) models, yet current methods rely on rigid templates to specify reasoning primitives (e.g., objects in the scene, high-level plans, structural affordances). These templates can force policies to process irrelevant information that distracts from critical action-prediction signals. This creates a bottleneck: without successful policies, we cannot verify reasoning quality; without quality reasoning, we cannot build robust policies. 
           </p>
           <p>
-            We introduce <strong>R&amp;B-EnCoRe</strong>, which enables models to bootstrap embodied reasoning from internet-scale knowledge through self-supervised refinement. By treating reasoning as a latent variable within importance-weighted variational inference, models can generate and distill a refined reasoning training dataset of embodiment-specific strategies <em>without external rewards, verifiers, or human annotation</em>.
+            We introduce <strong>R&amp;B-EnCoRe</strong>, which enables models to bootstrap embodied reasoning from internet-scale knowledge through self-supervised refinement. By treating reasoning as a latent variable within importance-weighted variational inference, models can <em>generate and distill a refined reasoning training dataset of embodiment-specific strategies without external rewards, verifiers, or human annotation</em>. 
           </p>
           <p>
-            We validate R&amp;B-EnCoRe across manipulation (Franka Panda in simulation, WidowX in hardware), legged navigation (bipedal, wheeled, bicycle, quadruped), and autonomous driving using VLA architectures with 1B, 4B, 7B, and 30B parameters.
+            We validate <strong>R&amp;B-EnCoRe</strong> across manipulation (Franka Panda in simulation, WidowX in hardware), legged navigation (bipedal, wheeled, bicycle, quadruped), and autonomous driving embodiments using various VLA architectures with 1B, 4B, 7B, and 30B parameters. Our approach achieves 28% gains in manipulation success, 101% improvement in navigation scores, and 21% reduction in collision-rate metric over models that indiscriminately reason about all available primitives. <strong>R&amp;B-EnCoRe</strong> enables models to distill reasoning that is predictive of successful control, bypassing manual annotation engineering while grounding internet-scale knowledge in physical execution.
           </p>
+
         </div>
       </div>
     </div>
@@ -155,7 +165,7 @@
     <h2 class="title is-3 has-text-centered">Discovered Reasoning Distributions</h2>
     <div class="content has-text-justified" style="max-width: 820px; margin: 0 auto 1.5rem;">
       <p>
-        R&amp;B-EnCoRe autonomously discovers distinct, interpretable reasoning distributions tailored to each embodiment — without any external supervision, reward signals, or human annotation. Rather than applying a single "one-size-fits-all" template, the framework identifies which reasoning primitives are genuinely predictive of successful control for each robot and task type.
+        R&amp;B-EnCoRe autonomously discovers distinct, interpretable reasoning distributions tailored to each embodiment — without any external supervision, reward signals, or human annotation. Rather than applying a single "one-size-fits-all" template, the framework identifies which reasoning primitives are genuinely predictive of successful control for each embodiment and task type.
       </p>
     </div>
     <figure class="image" style="max-width: 900px; margin: 0 auto;">
@@ -163,9 +173,9 @@
     </figure>
     <p class="has-text-centered" style="margin-top: 1rem; color: #555; font-size: 0.95rem; max-width: 820px; margin-left: auto; margin-right: auto;">
       <strong>Reasoning primitive distributions across domains.</strong>
-      (a) Manipulation: differences between Franka Panda (simulation) and WidowX (hardware) — notably in Visible Objects, Move Explain, and Subtask Explain. Concise Move and Gripper Position primitives dominate, while verbose explanations are pruned.
+      (a) Manipulation: differences between Franka Panda (simulation) and WidowX (hardware) — notably in Visible Objects, Move Explain, and Subtask Explain. Concise Move and Gripper Position primitives dominate, while verbose explanations and distracting details are pruned.
       (b) Legged navigation: structural affordances are consistently critical across all four embodiments (bipedal, wheeled, bicycle, quadruped); counterfactual reasoning is selectively used.
-      (c) Autonomous driving: reasoning concentrates on mission goals and constraints, while subjective weather descriptions are heavily suppressed.
+      (c) Autonomous driving: reasoning concentrates on mission goals and constraints in the form of notable and collidable objects.
     </p>
   </div>
 </section>
@@ -179,7 +189,7 @@
     <h3 class="title is-4" style="margin-top: 1.5rem;">WidowX Hardware Demonstrations</h3>
     <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
       <p>
-        We evaluate R&amp;B-EnCoRe on a WidowX robot arm using the Bridge v2 dataset with a 7B-parameter OpenVLA. Experiments span three task categories: <em>in-distribution</em>, <em>OOD target objects</em> (novel grasp targets), and <em>OOD scenes with distractions</em> (cluttered environments). R&amp;B-EnCoRe's refined reasoning is robust to out-of-distribution shifts where all-primitives baselines degrade significantly.
+        We evaluate R&amp;B-EnCoRe on a WidowX robot arm using the Bridge v2 dataset with a 7B-parameter OpenVLA. Experiments span three task categories: <em>in-distribution</em>, <em>OOD target objects</em> (novel grasp targets), and <em>OOD scenes with distractions</em> (cluttered environments). R&amp;B-EnCoRe's refined reasoning is robust to out-of-distribution shifts where reasoning with all primitives baselines degrade significantly.
       </p>
     </div>
 
@@ -190,12 +200,12 @@
         Test-Time Reasoning Suppressed for Low Latency
       </p>
       <p style="color: #555; font-size: 0.9rem; margin-bottom: 1.25rem;">
-        Because R&amp;B-EnCoRe uses reasoning dropout during training, its model can zero-shot generalize to an <em>Action Forcing</em> prompt — immediately producing action tokens without generating intermediate reasoning — reducing per-step latency while preserving the benefits of training-time CoT.
+        We prompt the various models with an <em>Action Forcing</em> prompt to immediately produce action tokens without generating intermediate reasoning and thereby reduce per-step latency (this treats reasoning as a form of improving representation learning). Overall, the model trained with R&amp;B-EnCoRe is able to achieve more robust performance on the OOD tasks compared to the other reasoning and non-reasoning models, and notably improves over the baseline model trained with reasoning over all primitives.
       </p>
       <div class="columns is-centered">
         <div class="column is-half">
           <figure class="image">
-            <video controls muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
+            <video controls autoplay muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
               <source src="static/videos/Hardware_videos_VLAs_with_Action_Forcing/task=put_red_pepper_on_black_stove.mp4" type="video/mp4">
             </video>
           </figure>
@@ -206,7 +216,7 @@
         </div>
         <div class="column is-half">
           <figure class="image">
-            <video controls muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
+            <video controls autoplay muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
               <source src="static/videos/Hardware_videos_VLAs_with_Action_Forcing/task=put_blue_peacock_in_sink.mp4" type="video/mp4">
             </video>
           </figure>
@@ -225,10 +235,10 @@
         Explicit Chain-of-Thought at Inference
       </p>
       <p style="color: #555; font-size: 0.9rem; margin-bottom: 1.25rem;">
-        When generating full CoT traces at inference, R&amp;B-EnCoRe produces <em>concise, action-predictive reasoning</em> (~3 sec/step) versus &gt;5 sec/step for the all-primitives baseline. Pruning verbose reasoning reduces control lag — preventing grasped objects from slipping during long trajectories — while improving OOD performance by 31%.
+        When generating full CoT traces at inference, R&amp;B-EnCoRe produces <em>concise, action-predictive reasoning</em> (~3 sec/step) versus &gt;5 sec/step for the all-primitives baseline. Pruning verbose reasoning reduces control lag — preventing grasped objects from slipping during long trajectories — while improving OOD performance.
       </p>
       <div style="max-width: 50%; margin: 0 auto;">
-        <video controls muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
+        <video controls autoplay muted loop playsinline style="width:100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.12);">
           <source src="static/videos/Hardware_video_VLAs_doing_Test_Time_Reasoning/task=put_red_pepper_in_yellow_basket.mp4" type="video/mp4">
         </video>
         <p class="has-text-centered" style="margin-top: 0.6rem; font-size: 0.9rem; color: #444;">
@@ -242,7 +252,7 @@
     <h3 class="title is-4" style="margin-top: 2rem;">LIBERO-90: Task-Salient Perception</h3>
     <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
       <p>
-        Exhaustive object enumeration introduces noise: a model listing <em>all</em> visible objects almost never produces traces where every listed object is task-relevant (0.03% criticality rate). R&amp;B-EnCoRe autonomously identifies and retains only task-salient objects — achieving a <strong>&gt;25% object criticality rate</strong> and an 80.3% success rate versus 76.1% for the full-list baseline — without any external guidance on which objects matter.
+        Exhaustive object enumeration introduces noise: a model listing <em>all</em> visible objects almost never produces traces where every listed object is task-relevant (0.03% criticality rate). R&amp;B-EnCoRe autonomously identifies and retains task-salient objects — achieving a <strong>&gt;25% object criticality rate</strong> and an 80.3% success rate versus 76.1% for the full-list baseline — without any external guidance on which objects matter.
       </p>
     </div>
     <figure class="image" style="max-width: 820px; margin: 0 auto;">
@@ -250,7 +260,7 @@
     </figure>
     <p class="has-text-centered" style="margin-top: 1rem; color: #555; font-size: 0.95rem; max-width: 800px; margin-left: auto; margin-right: auto;">
       <strong>Visible Objects in LIBERO-90 across episode steps.</strong>
-      The all-objects baseline (top) attends to task-irrelevant items such as the plate and bowl throughout execution. R&amp;B-EnCoRe's model (bottom) generates reasoning focused on task-critical objects only, demonstrating effective self-supervised filtering of distracting perceptual information.
+      The all-objects baseline (botton) attends to task-irrelevant items such as the plate and bowl throughout execution. R&amp;B-EnCoRe's model (top) generates reasoning focused on task-critical objects most of the time, demonstrating effective self-supervised filtering of distracting perceptual information.
     </p>
 
     <!-- ---- WidowX Reasoning Traces ---- -->
@@ -276,7 +286,7 @@
     <h2 class="title is-3 has-text-centered">Legged Robot Navigation</h2>
     <div class="content has-text-justified" style="max-width: 820px; margin: 0 auto 1.5rem;">
       <p>
-        We evaluate R&amp;B-EnCoRe on the NaviTrace dataset across four embodiments: bipedal, wheeled robot, bicycle, and quadruped. A 30B-parameter Qwen3-VL MoE model generates and refines its own reasoning traces via self-querying (FM = M), enabling fully self-supervised bootstrapping without any external annotation. R&amp;B-EnCoRe achieves a <strong>101% improvement in cumulative navigation score</strong> over models reasoning with all primitives (39.4 vs. 19.6).
+        We evaluate R&amp;B-EnCoRe on the NaviTrace dataset across four embodiments: bipedal, wheeled robot, bicycle, and quadruped. We use a 30B-parameter Qwen3-VL MoE model to generate and refine its own synthetic reasoning trace data, enabling fully self-supervised bootstrapping without any external annotation. R&amp;B-EnCoRe achieves a <strong>101% improvement in cumulative navigation score</strong> over models reasoning with all primitives (39.4 vs. 19.6).
       </p>
       <p>
         A key insight: the model learns that structural <em>affordances</em> — what actions a region of the environment supports given the robot's kinematics — are the most critical signal for legged navigation, while counterfactual reasoning is selectively reserved for specific decision moments. R&amp;B-EnCoRe also correctly identifies that subjective <em>weather descriptions</em> are largely irrelevant and prunes them aggressively.
@@ -287,7 +297,7 @@
     </figure>
     <p class="has-text-centered" style="margin-top: 1rem; color: #555; font-size: 0.95rem; max-width: 820px; margin-left: auto; margin-right: auto;">
       <strong>Quadruped navigation waypoint trajectories on a holdout task.</strong>
-      The robot must follow a trail while avoiding slippery ice.
+      The robot must follow a trail (with the implicit constraint of avoiding slippery ice).
       <em>No Reasoning:</em> ignores terrain hazards and traverses ice directly.
       <em>All Primitives:</em> confounded by irrelevant signals; reduces ice contact slightly but fails to follow the path.
       <em>Random Primitives:</em> tracks some of the path but traverses ice due to missing affordance reasoning.
@@ -321,10 +331,11 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{@GanaiLuoEtAl2026,
-  title = 	 {Self-Supervised Bootstrapping of Action-Predictive Embodied Reasoning},
-  author =       {Ganai, Milan and Luo, Katie and Frey, Jonas and Barrett, Clark and Pavone, Marco},
-  year = 	 {2026},
+    <pre><code>@article{GanaiLuoEtAl2026,
+  title={Self-Supervised Bootstrapping of Action-Predictive Embodied Reasoning},
+  author={Ganai, Milan and Luo, Katie and Frey, Jonas and Barrett, Clark and Pavone, Marco},
+  journal={arXiv preprint arXiv:2602.08167},
+  year={2026}
 }
     </code></pre>
   </div>
